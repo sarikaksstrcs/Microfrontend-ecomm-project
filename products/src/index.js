@@ -11,4 +11,4 @@ for (let i = 0; i < 10; i++) {
 }
 console.log(products);
 
-export default products;
+document.querySelector('#product-list').innerHTML = products;
