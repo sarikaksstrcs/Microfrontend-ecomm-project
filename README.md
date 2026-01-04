@@ -1,4 +1,4 @@
-# Miceofrontent (Micro-Frontend)
+# Microfrontent (Micro-Frontend)
 
 A small micro-frontend workspace containing a host shell (`container`) and a remote app (`products`). This README explains the repository layout, local development steps, and common commands to run the apps.
 
