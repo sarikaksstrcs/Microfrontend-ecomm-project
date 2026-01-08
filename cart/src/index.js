@@ -1,14 +1,14 @@
+// cart/src/index.js
 import faker from 'faker';
 
 let cartItems = '';
 
-for (let i = 0; i < 5; i++) {
-  cartItems += `<div>
-    <h2>${faker.commerce.productName()}</h2>
-    <p>Quantity: ${Math.floor(Math.random() * 5) + 1}</p>
-    <strong>$${faker.commerce.price()}</strong>
+  cartItems += `
+<h1>My Cart Item</h1>
+<div>
+    <h2>5 products</h2
   </div>`;
-}
+
 console.log(cartItems);
 
 document.querySelector('#cart-list').innerHTML = cartItems;

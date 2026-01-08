@@ -1,3 +1,4 @@
+// cart/webpack.config.js
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
@@ -14,8 +15,5 @@ module.exports = {
         './CartIndex':'./src/index'
       },
     }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html'
-    })
   ]
 }   
