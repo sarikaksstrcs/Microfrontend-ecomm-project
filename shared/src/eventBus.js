@@ -11,13 +11,14 @@ class EventBus {
 
   off(event, callback) {
     if (!this.events[event]) return;
-    this.events[event] = this.events[event].filter(cb => cb !== callback);
+    this.events[event] = this.events[event].filter((cb) => cb !== callback);
   }
 
   emit(event, data) {
     if (!this.events[event]) return;
-    this.events[event].forEach(callback => callback(data));
+    this.events[event].forEach((callback) => callback(data));
   }
 }
 
 const eventBus = new EventBus();
+export default eventBus;
