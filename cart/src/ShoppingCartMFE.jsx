@@ -1,12 +1,16 @@
+import React, { useState, useEffect } from 'react';
+import { ShoppingCart } from 'lucide-react';
+import eventBus from 'shared/eventBus';
+
 const ShoppingCartMFE = () => {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     const unsubscribe = eventBus.on('cart:add', (product) => {
-      setCartItems(prev => {
-        const existing = prev.find(item => item.id === product.id);
+      setCartItems((prev) => {
+        const existing = prev.find((item) => item.id === product.id);
         if (existing) {
-          return prev.map(item =>
+          return prev.map((item) =>
             item.id === product.id
               ? { ...item, quantity: item.quantity + 1 }
               : item
@@ -20,17 +24,19 @@ const ShoppingCartMFE = () => {
   }, []);
 
   const updateQuantity = (id, delta) => {
-    setCartItems(prev =>
-      prev.map(item =>
-        item.id === id
-          ? { ...item, quantity: Math.max(0, item.quantity + delta) }
-          : item
-      ).filter(item => item.quantity > 0)
+    setCartItems((prev) =>
+      prev
+        .map((item) =>
+          item.id === id
+            ? { ...item, quantity: Math.max(0, item.quantity + delta) }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
     );
   };
 
   const removeItem = (id) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -50,9 +56,13 @@ const ShoppingCartMFE = () => {
       ) : (
         <>
           <div className="space-y-4">
-            {cartItems.map(item => (
-              <div key={item.id} className="bg-white p-4 rounded-lg shadow flex gap-4">
-                <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
+            {cartItems.map((item) => (
+              <div key={item.id} className="card flex gap-4">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-20 h-20 object-cover rounded"
+                />
                 <div className="flex-1">
                   <h3 className="font-semibold">{item.name}</h3>
                   <p className="text-sm text-gray-600">${item.price}</p>
@@ -79,7 +89,9 @@ const ShoppingCartMFE = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-lg">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-bold text-lg">
+                    ${(item.price * item.quantity).toFixed(2)}
+                  </p>
                 </div>
               </div>
             ))}
@@ -88,14 +100,16 @@ const ShoppingCartMFE = () => {
           <div className="bg-blue-50 p-6 rounded-lg">
             <div className="flex justify-between items-center mb-4">
               <span className="text-xl font-semibold">Total:</span>
-              <span className="text-3xl font-bold text-blue-600">${total.toFixed(2)}</span>
+              <span className="text-3xl font-bold text-blue-600">
+                ${total.toFixed(2)}
+              </span>
             </div>
-            <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-              Proceed to Checkout
-            </button>
+            <button className="btn-primary w-full">Proceed to Checkout</button>
           </div>
         </>
       )}
     </div>
   );
 };
+
+export default ShoppingCartMFE;
