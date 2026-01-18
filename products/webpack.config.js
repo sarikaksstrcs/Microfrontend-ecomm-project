@@ -1,22 +1,60 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
-const { entry } = require('../container/webpack.config');
+const HtmlWebpackPlugin_PC = require('html-webpack-plugin');
+const ModuleFederationPlugin_PC = require('webpack/lib/container/ModuleFederationPlugin');
+
 module.exports = {
-  mode:'development',
   entry: './src/index.js',
-  devServer:{
-    port:8081,
+  mode: 'development',
+  devServer: {
+    port: 3001,
+    historyApiFallback: true,
+    hot: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  },
+  output: {
+    publicPath: 'http://localhost:3001/',
+    clean: true,
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react', '@babel/preset-env'],
+          },
+        },
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
+    ],
   },
   plugins: [
-    new ModuleFederationPlugin({
-      name: 'products',
+    new ModuleFederationPlugin_PC({
+      name: 'productCatalog',
       filename: 'remoteEntry.js',
       exposes: {
-        './ProductsIndex':'./src/index'
+        './ProductCatalog': './src/ProductCatalog',
+      },
+      remotes: {
+        shared: 'shared@http://localhost:3004/remoteEntry.js',
+      },
+      shared: {
+        react: { singleton: true, requiredVersion: '^18.0.0' },
+        'react-dom': { singleton: true, requiredVersion: '^18.0.0' },
+        'lucide-react': { singleton: true },
       },
     }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html'
-    })
-  ]
-}  
+    new HtmlWebpackPlugin_PC({
+      template: './public/index.html',
+    }),
+  ],
+};

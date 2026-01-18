@@ -1,11 +1,11 @@
-const HtmlWebpackPlugin_SC = require('html-webpack-plugin');
-const ModuleFederationPlugin_SC = require('webpack/lib/container/ModuleFederationPlugin');
+const HtmlWebpackPlugin_UP = require('html-webpack-plugin');
+const ModuleFederationPlugin_UP = require('webpack/lib/container/ModuleFederationPlugin');
 
 module.exports = {
   entry: './src/index.js',
   mode: 'development',
   devServer: {
-    port: 3002,
+    port: 3003,
     historyApiFallback: true,
     hot: true,
     headers: {
@@ -13,7 +13,7 @@ module.exports = {
     },
   },
   output: {
-    publicPath: 'http://localhost:3002/',
+    publicPath: 'http://localhost:3003/',
     clean: true,
   },
   resolve: {
@@ -38,11 +38,11 @@ module.exports = {
     ],
   },
   plugins: [
-    new ModuleFederationPlugin_SC({
-      name: 'shoppingCart',
+    new ModuleFederationPlugin_UP({
+      name: 'userProfile',
       filename: 'remoteEntry.js',
       exposes: {
-        './ShoppingCart': './src/ShoppingCartMFE',
+        './UserProfile': './src/UserProfile',
       },
       remotes: {
         shared: 'shared@http://localhost:3004/remoteEntry.js',
@@ -53,7 +53,7 @@ module.exports = {
         'lucide-react': { singleton: true },
       },
     }),
-    new HtmlWebpackPlugin_SC({
+    new HtmlWebpackPlugin_UP({
       template: './public/index.html',
     }),
   ],
