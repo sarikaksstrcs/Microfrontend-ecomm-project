@@ -1,79 +1,167 @@
-# Microfrontent (Micro-Frontend)
+# E-Commerce Microfrontend Application
 
-A small micro-frontend workspace containing a host shell (`container`) and a remote app (`products`). This README explains the repository layout, local development steps, and common commands to run the apps.
+A scalable e-commerce platform built with **Microfrontend Architecture** using **Webpack Module Federation**.
 
-**Project Overview**
-
-- **Name**: Miceofrontent (micro-frontend workspace).
-- **Purpose**: Demonstrate a micro-frontend setup where `container` acts as the host application (shell) and `products` is a remote/child application.
-
-**Project Structure**
-
-- `container/`: Host/shell application. Responsible for loading and composing remote micro-frontends.
-- `products/`: Remote micro-frontend that exposes features (e.g., product listing, product details).
-
-Check each folder for its own `package.json` and scripts.
-
-**Local Development**
-
-1. Install dependencies and start the `container` (host):
-
-```bash
-cd container
-npm install
-npm run dev
-```
-
-2. In a separate terminal, install dependencies and start the `products` remote:
-
-```bash
-cd products
-npm install
-npm run dev
-```
-
-Notes:
-- If you use `pnpm` or `yarn`, substitute `npm install` with `pnpm install` or `yarn`.
-- Each package's `package.json` may contain different script names (e.g., `start`, `dev`). If `npm run dev` fails, inspect `package.json` in that folder for the correct script.
-
-**Build & Production**
-
-- To build each package for production, run the build script inside the package folder (if defined):
-
-```bash
-cd container
-npm run build
-
-cd ../products
-npm run build
-```
-
-- Deployment depends on your hosting strategy (static host, CDN, or server). Configure the remote modules (e.g., module federation or import maps) to point at production URLs.
-
-**Scripts**
-
-- Check `container/package.json` and `products/package.json` for available scripts.
-- Common script names: `dev`, `start`, `build`, `test`.
-
-**Troubleshooting**
-
-- If a remote module does not load in the host, ensure the remote app is running and that ports/URLs match the host configuration.
-- If ports conflict, change the port in the remote's dev server configuration.
-- If you see 404s for remote entries, verify the built artifacts and the path used by the host to load the remote.
-
-**Contributing**
-
-- Open an issue or submit a pull request with a clear description.
-- Follow existing code style in each package and add tests for new features when possible.
-
-**License**
-
-- Add your preferred license (e.g., MIT) by creating a `LICENSE` file at the repository root.
+![React](https://img.shields.io/badge/React-18.2.0-blue)
+![Webpack](https://img.shields.io/badge/Webpack-5.89.0-brightgreen)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3.5-38B2AC)
 
 ---
 
-If you want, I can:
-- Add more detailed `dev`/`build` commands after inspecting each `package.json`.
-- Add a `docker` or CI/CD example for deploying the apps.
+## Overview
 
-Created at: project root `README.md`.
+Independent frontend applications working together seamlessly - Product Catalog, Shopping Cart, User Profile, and Shared utilities.
+
+### Application URLs
+
+| Application | Port | URL |
+|------------|------|-----|
+| Host | 3000 | http://localhost:3000 |
+| Product Catalog | 3001 | http://localhost:3001 |
+| Shopping Cart | 3002 | http://localhost:3002 |
+| User Profile | 3003 | http://localhost:3003 |
+| Shared Library | 3004 | http://localhost:3004 |
+
+---
+
+## Features
+
+- **Module Federation** - Independent deployment of each microfrontend
+- **Event-Driven Communication** - Decoupled MFE interaction
+- **Mock Data** - No backend required (uses Faker.js)
+- **Responsive Design** - Mobile-first approach
+- **Hot Reload** - Fast development workflow
+
+---
+
+## Quick Start
+
+```bash
+# Clone repository
+git clone https://github.com/yourusername/ecommerce-mfe.git
+cd ecommerce-mfe
+
+# Initialize and start
+make init
+make dev
+
+# Or manually
+npm install  # in each directory
+npm start    # in each directory
+```
+
+**Access:** http://localhost:3000
+
+---
+
+## Project Structure
+
+```
+ecommerce-mfe/
+├── host/                 # Main shell (3000)
+├── product-catalog/      # Products MFE (3001)
+├── shopping-cart/        # Cart MFE (3002)
+├── user-profile/         # Profile MFE (3003)
+├── shared/              # Utilities (3004)
+├── Makefile             # Build automation
+└── README.md
+```
+
+---
+
+## Commands
+
+### Makefile (Recommended)
+```bash
+make help          # Show all commands
+make dev           # Start all MFEs
+make build         # Build for production
+make clean         # Clean dependencies
+make stop          # Stop servers
+make kill          # Force kill processes
+```
+
+### Manual
+```bash
+npm start          # Development
+npm run build      # Production build
+```
+
+---
+
+## Configuration
+
+### Webpack Module Federation
+
+**Host (Consumer):**
+```javascript
+remotes: {
+  productCatalog: 'productCatalog@http://localhost:3001/remoteEntry.js',
+  shoppingCart: 'shoppingCart@http://localhost:3002/remoteEntry.js',
+  userProfile: 'userProfile@http://localhost:3003/remoteEntry.js',
+}
+```
+
+**MFE (Provider):**
+```javascript
+exposes: {
+  './ProductCatalog': './src/ProductCatalog',
+}
+```
+
+### Event Bus Communication
+```javascript
+// Publish
+eventBus.emit('cart:add', product);
+
+// Subscribe
+eventBus.on('cart:add', (product) => { /* handle */ });
+```
+
+---
+
+## 🏭 Production Build
+
+```bash
+make build  # Build all MFEs
+```
+
+Output in `dist/` directory of each MFE.
+
+---
+
+## Troubleshooting
+
+```bash
+make kill          # Port in use
+make clean         # Module errors
+make status        # Check running servers
+```
+
+---
+
+## Deployment
+
+**Netlify/Vercel:**
+```bash
+cd host && netlify deploy --prod
+cd product-catalog && netlify deploy --prod
+```
+
+**Docker:**
+```bash
+docker-compose up -d
+```
+
+---
+
+## Tech Stack
+
+- React 18.2
+- Webpack 5 + Module Federation
+- Tailwind CSS
+- Babel
+- Faker.js
+
+---
+
