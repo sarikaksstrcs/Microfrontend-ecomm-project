@@ -7,6 +7,18 @@ A scalable e-commerce platform built with **Microfrontend Architecture** using *
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3.5-38B2AC)
 
 ---
+## Dashboard
+<img width="1457" height="751" alt="image" src="https://github.com/user-attachments/assets/52c58166-35e2-4ec1-902e-f5b834be4f65" />
+
+## Product Listing
+<img width="1451" height="742" alt="image" src="https://github.com/user-attachments/assets/de8d08f6-69be-4871-bb0a-8e5572a1b821" />
+
+## Carts
+<img width="1451" height="742" alt="image" src="https://github.com/user-attachments/assets/7f0b7695-26dd-4f73-9bba-7f9600ac5df6" />
+
+## User Profile
+<img width="1451" height="738" alt="image" src="https://github.com/user-attachments/assets/cc339697-00f8-43f3-944d-06c029a714ae" />
+
 
 ## Overview
 
@@ -120,7 +132,7 @@ eventBus.on('cart:add', (product) => { /* handle */ });
 
 ---
 
-## 🏭 Production Build
+## Production Build
 
 ```bash
 make build  # Build all MFEs
